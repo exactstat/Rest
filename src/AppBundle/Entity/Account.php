@@ -28,13 +28,20 @@ class Account
      */
     private $currency;
 
+    /**
+     * @var Wallet
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Wallet")
+     * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id")
+     */
+    protected $wallet;
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -46,7 +53,7 @@ class Account
      *
      * @return Account
      */
-    public function setCurrency($currency)
+    public function setCurrency($currency): Account
     {
         $this->currency = $currency;
 
@@ -58,9 +65,26 @@ class Account
      *
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         return $this->currency;
     }
+
+    /**
+     * @return Wallet
+     */
+    public function getWallet()
+    {
+        return $this->wallet;
+    }
+
+    /**
+     * @param Wallet $wallet
+     */
+    public function setWallet(Wallet $wallet): void
+    {
+        $this->wallet = $wallet;
+    }
+
 }
 
