@@ -37,6 +37,14 @@ class Account
     protected $wallet;
 
     /**
+     * @var Money
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
+     * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
+     */
+    protected $money;
+
+    /**
      * Get id
      *
      * @return int
@@ -73,7 +81,7 @@ class Account
     /**
      * @return Wallet
      */
-    public function getWallet()
+    public function getWallet(): ?Wallet
     {
         return $this->wallet;
     }
@@ -86,5 +94,19 @@ class Account
         $this->wallet = $wallet;
     }
 
-}
+    /**
+     * @return Money
+     */
+    public function getMoney(): Money
+    {
+        return $this->money;
+    }
 
+    /**
+     * @param Money $money
+     */
+    public function setMoney(Money $money): void
+    {
+        $this->money = $money;
+    }
+}
