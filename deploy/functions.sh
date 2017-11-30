@@ -30,16 +30,13 @@ pre_provision () {
     php bin/console doctrine:cache:clear-query --env=devkit
     php bin/console doctrine:cache:clear-metadata --env=devkit
     php bin/console doctrine:database:drop --if-exists --force --env=devkit
-    php bin/console doctrine:mongodb:schema:drop --env=devkit
     php bin/console doctrine:database:create --env=devkit
-    php bin/console doctrine:mongodb:schema:create --env=devkit
-    php bin/console doctrine:mongodb:schema:update --env=devkit
 }
 
 provision_clean () {
-    php bin/console pp:resque-redis:clear
+#    php bin/console pp:resque-redis:clear
 #    php bin/console doctrine:database:import deploy/db/data.sql --env=devkit
-    php bin/console doctrine:migrations:migrate --no-interaction --env=devkit
+#    php bin/console doctrine:migrations:migrate --no-interaction --env=devkit
     php bin/console doctrine:schema:validate --env=devkit
 }
 
