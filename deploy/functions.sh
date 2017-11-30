@@ -34,6 +34,7 @@ pre_provision () {
 }
 
 provision_clean () {
+#    php bin/console pp:resque-redis:clear
 #    php bin/console doctrine:database:import deploy/db/data.sql --env=devkit
 #    php bin/console doctrine:migrations:migrate --no-interaction --env=devkit
     php bin/console doctrine:schema:validate --env=devkit

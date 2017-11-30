@@ -11,6 +11,17 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
+        oauth_token:
+            pattern: ^/oauth/v2/token
+            security: false
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth
+            security: false
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false
         main:
             pattern: ^/
             form_login:
@@ -19,20 +30,17 @@ security:
 
             logout:       true
             anonymous:    true
-            oauth:
-                resource_owners:
-                    facebook:           "/login/check-facebook"
-                    google:             "/login/check-google"
-                    my_custom_provider: "/login/check-custom"
-                    my_github:          "/login/check-github"
-                login_path:        /login
-                use_forward:       false
-                failure_path:      /login
-                oauth_user_provider:
-                    service: my.custom.user_provider
+#            oauth:
+#                resource_owners:
+#                    facebook:           "/login/check-facebook"
+#                    google:             "/login/check-google"
+#                    my_custom_provider: "/login/check-custom"
+#                    my_github:          "/login/check-github"
+#                login_path:        /login
+#                use_forward:       false
+#                failure_path:      /login
+#                oauth_user_provider:
+#                    service: my.custom.user_provider
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
