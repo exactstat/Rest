@@ -69,9 +69,20 @@
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
+        "incenteev-parameters": [
+            {
+                "file": "app/config/parameters.yml",
+                "dist-file": "app/config/parameters.yml.dist"
+            },
+            {
+                "file": "app/config/parameters.devkit.yml",
+                "dist-file": "app/config/parameters.yml.dist"
+            }
+        ],
         "branch-alias": null
-    }
+    },
+    "authors": [
+        {"name": "Roman Senchuk", "role": "Software Engineer"},
+        {"name": "Nazar Salo", "role": "Software Engineer"}
+    ]
 }

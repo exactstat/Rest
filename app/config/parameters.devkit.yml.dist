@@ -1,0 +1,46 @@
+# This file is auto-generated during the composer install
+parameters:
+    trusted_proxies: 172.0.0.0/8
+    database_driver: pdo_mysql
+    database_host: ppdk-mysql
+    database_name: money_local
+    database_password: RjwehMMu9ThmyQNX
+    database_port: 3306
+    database_user: money
+    protocol: 'http://'
+    domain: api.money.loc
+    site_url: '%protocol%%domain%'
+    site_cdn: '%site_url%'
+    mailer_host: 127.0.0.1
+    mailer_user: proofpilot
+    mongo.data.server: 'mongodb://admin:RjwehMMu9ThmyQNX@ppdk-mongodb:27017/%mongo.data.db%'
+    mongo.data.db: proofpilot_local
+    mongo.session.server: 'mongodb://admin:RjwehMMu9ThmyQNX@ppdk-mongodb:27017/%mongo.session.db%'
+    mongo.session.db: session_db
+    mongo.session.options:
+        database: '%mongo.session.db%'
+        collection: session
+    monolog.handler.gelf.debug_level: 100
+    snc.redis.dsn: 'redis://%redis.pass%@%redis.host%:%redis.port%'
+    redis.dsn: 'redis://%redis.user%:%redis.pass%@%redis.host%:%redis.port%'
+    redis.host: ppdk-redis
+    redis.user: ''
+    redis.pass: popONmvb87-uiRHKbvvafflkp
+    redis.port: '6379'
+    redis.database: 0
+    redis.database.cache: 1
+    redis.database.squirrel: 2
+    secret: ThisTokenIsNotSoSecretChangeIt
+    ocpu.service_name: v3service
+    web_socket_server_port: 8080
+    web_socket_server_host: 127.0.0.1
+    default.image.id: 1
+    zapier.enable: 0
+    timings.send_to_zapier: 0
+    qjobber.timings.enable: 0
+    oauth.domain: bmxzsiz0qo000sg04o44kso8gg8k8o8o0sgkck888woc0cksc
+    bugsnag.enable: true
+    email_hippo.api_key: C1A100D5
+    human_api.prefix: ppv3devkit_
+    twilio.sms.number: '+16073042785'
+    private.files_dir: '%kernel.root_dir%/../private'

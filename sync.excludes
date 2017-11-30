@@ -1,0 +1,6 @@
+/var/cache/*
+/var/logs/*
+/app/config/parameters.yml
+/app/bootstrap.php.cache
+.*/
+.*
