@@ -8,3 +8,7 @@ fos_user:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+
+blog:
+    resource: "@AppBundle/Controller/AccountController.php"
+    type:     annotation
