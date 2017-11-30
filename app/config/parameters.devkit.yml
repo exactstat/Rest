@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: ppdk-mysql
+    database_name: money_local
+    database_password: RjwehMMu9ThmyQNX
+    database_port: 3306
+    database_user: money
+    mailer_host: 127.0.0.1
+    mailer_user: proofpilot
+    secret: ThisTokenIsNotSoSecretChangeIt
+    mailer_transport: smtp
+    mailer_password: null
