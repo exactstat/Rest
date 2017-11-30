@@ -1,0 +1,124 @@
+<?php
+
+/*
+ * Created by Roman Senchuk.
+ * as the part of the test Task for MoneyFGE
+ * at 30.11.17 21:00
+ */
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class Transfer
+ * @package AppBundle\Entity
+ * @author Roman Senchuk frspm.roman@gmail.com
+ * @ORM\Table(name="transfers")
+ * @ORM\Entity()
+ */
+class Transfer
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(name="sender_account", type="string")
+     */
+    protected $senderAccount;
+
+    /**
+     * @ORM\Column(name="receiver_account", type="string")
+     */
+    protected $receiverAccount;
+
+    /**
+     * @ORM\Column(name="purpose", type="string")
+     */
+    protected $purpose;
+
+    /**
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    protected $createdAt;
+
+    /**
+     * @return mixed
+     */
+    public function getSenderAccount()
+    {
+        return $this->senderAccount;
+    }
+
+    /**
+     * @param mixed $senderAccount
+     */
+    public function setSenderAccount($senderAccount): void
+    {
+        $this->senderAccount = $senderAccount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReceiverAccount()
+    {
+        return $this->receiverAccount;
+    }
+
+    /**
+     * @param mixed $receiverAccount
+     */
+    public function setReceiverAccount($receiverAccount): void
+    {
+        $this->receiverAccount = $receiverAccount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPurpose()
+    {
+        return $this->purpose;
+    }
+
+    /**
+     * @param mixed $purpose
+     */
+    public function setPurpose($purpose): void
+    {
+        $this->purpose = $purpose;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+
+}
