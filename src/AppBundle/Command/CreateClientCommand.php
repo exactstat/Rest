@@ -50,7 +50,7 @@ EOT
         $client = $clientManager->createClient();
         $hosts = $input->getArgument('hosts');
         $hosts = $hosts ?? 'api.money.loc';
-        $client->setRedirectUris($hosts);
+        $client->setRedirectUris([$hosts]);
 
         $client->setAllowedGrantTypes($input->getOption('grant'));
 
