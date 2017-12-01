@@ -33,7 +33,7 @@ class Wallet
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Account", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Account", mappedBy="wallet")
      */
     protected $accounts;
 

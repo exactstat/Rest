@@ -31,7 +31,7 @@ class Account
     /**
      * @var Wallet
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Wallet")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Wallet", inversedBy="accounts")
      * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id")
      */
     protected $wallet;
