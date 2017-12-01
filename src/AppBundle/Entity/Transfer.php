@@ -29,12 +29,12 @@ class Transfer
     private $id;
 
     /**
-     * @ORM\Column(name="sender_account", type="string", length="20")
+     * @ORM\Column(name="sender_account", type="string", length=20)
      */
     protected $senderAccount;
 
     /**
-     * @ORM\Column(name="receiver_account", type="string", length="20")
+     * @ORM\Column(name="receiver_account", type="string", length=20)
      */
     protected $receiverAccount;
 
@@ -44,13 +44,38 @@ class Transfer
     protected $purpose;
 
     /**
+     * @var Money
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
+     * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
+     */
+    protected $money;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
+    }
+
+    /**
+     * @return Money
+     */
+    public function getMoney(): Money
+    {
+        return $this->money;
+    }
+
+    /**
+     * @param Money $money
+     */
+    public function setMoney(Money $money): void
+    {
+        $this->money = $money;
     }
 
     /**
@@ -124,6 +149,5 @@ class Transfer
     {
         return $this->id;
     }
-
 
 }
