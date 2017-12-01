@@ -19,3 +19,8 @@ account:
     resource: "@AppBundle/Controller/AccountController.php"
     prefix:   /api
     type:     annotation
+
+user:
+    resource: "@AppBundle/Controller/UserController.php"
+    prefix:   /api
+    type:     annotation
