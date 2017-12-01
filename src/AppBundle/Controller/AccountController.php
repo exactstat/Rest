@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -24,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AccountController extends FOSRestController
 {
-
     /**
      * Get the Study
      * @Get("/accounts/{entity}", requirements={"entity" = "\d+"})
@@ -38,5 +38,27 @@ class AccountController extends FOSRestController
     {
         return $this->view(array('date' => $entity));
     }
+
+    /**
+     * Get the Study
+     * @Get("/accounts")
+     * @ApiDoc(resource=true, description="Get all Account")
+     * @View()
+     * @param Request $request
+     * @return object
+     */
+    public function cgetAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+        $accounts = $em->getRepository(Account::class)->findBy([
+            'wallet' => $user->getWallet()
+        ]);
+
+        return $this->view(array('date' => $accounts));
+    }
+
+
 
 }

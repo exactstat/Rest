@@ -35,6 +35,13 @@ class User extends BaseUser
     protected $facebookAccessToken;
 
     /**
+     * @var Wallet
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Wallet", mappedBy="user")
+     */
+    protected $wallet;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -79,4 +86,21 @@ class User extends BaseUser
     {
         return $this->facebookAccessToken;
     }
+
+    /**
+     * @return Wallet
+     */
+    public function getWallet(): Wallet
+    {
+        return $this->wallet;
+    }
+
+    /**
+     * @param Wallet $wallet
+     */
+    public function setWallet(Wallet $wallet): void
+    {
+        $this->wallet = $wallet;
+    }
+
 }
