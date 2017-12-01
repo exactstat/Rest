@@ -11,7 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Account;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\View\View;
+use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,14 +29,14 @@ class AccountController extends FOSRestController
      * Get the Study
      * @Get("/accounts/{entity}", requirements={"entity" = "\d+"})
      * @ApiDoc(resource=true, description="Get the Account")
-     * @Rest\View()
+     * @View()
      * @param Request $request
      * @param Account $entity
      * @return object
      */
     public function getAction(Request $request, Account $entity)
     {
-        return $this->view([$entity]);
+        return $this->view(array('date' => $entity));
     }
 
 }
