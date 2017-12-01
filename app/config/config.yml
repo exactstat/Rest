@@ -79,6 +79,11 @@ fos_user:
         address: "testapp@testapp.com"
         sender_name: "Test App"
 
+fos_rest:
+    routing_loader:
+        default_format: json                            # All responses should be JSON formated
+        include_format: false
+
 fos_oauth_server:
     db_driver:           orm
     client_class:        AppBundle\Entity\Security\Client
@@ -86,4 +91,4 @@ fos_oauth_server:
     refresh_token_class: AppBundle\Entity\Security\RefreshToken
     auth_code_class:     AppBundle\Entity\Security\AuthCode
     service:
-        user_provider: fos_user.user_provider.username
+        user_provider:   fos_user.user_provider.username
