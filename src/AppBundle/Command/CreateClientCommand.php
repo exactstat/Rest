@@ -1,9 +1,11 @@
 <?php
+
 /*
  * Created by Nazar Salo.
  * as the part of the test Task for MoneyFGE
  * at 30.11.17 21:00
  */
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

@@ -17,6 +17,9 @@ security:
         oauth_authorize:
             pattern: ^/oauth/v2/auth
             security: false
+        api_doc:
+            pattern:    ^/doc
+            anonymous:  true
         api:
             pattern:    ^/api
             fos_oauth:  true

@@ -13,8 +13,9 @@ fos_oauth_server_authorize:
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
+    prefix:   /doc
 
-blog:
+account:
     resource: "@AppBundle/Controller/AccountController.php"
+    prefix:   /api
     type:     annotation
