@@ -79,23 +79,11 @@ fos_user:
         address: "testapp@testapp.com"
         sender_name: "Test App"
 
-hwi_oauth:
-    connect:
-        account_connector: my.custom.user_provider
-    firewall_names:
-        - 'main'
-    fosub:
-        username_iterations: 30
-        properties:
-            facebook:    facebook_id
-    resource_owners:
-        facebook:
-            type:                facebook
-            client_id:           id
-            client_secret:       secret
-            scope:               scope
-
-services:
-    my.custom.user_provider:
-        class:  AppBundle\Security\Core\User\MyFOSUBUserProvider
-        arguments: ['@fos_user.user_manager', { facebook: facebook_id }]
+fos_oauth_server:
+    db_driver:           orm
+    client_class:        AppBundle\Entity\Security\Client
+    access_token_class:  AppBundle\Entity\Security\AccessToken
+    refresh_token_class: AppBundle\Entity\Security\RefreshToken
+    auth_code_class:     AppBundle\Entity\Security\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username
