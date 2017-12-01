@@ -39,6 +39,7 @@ provision_clean () {
 #    php bin/console doctrine:migrations:migrate --no-interaction --env=devkit
     php bin/console doctrine:schema:create --env=devkit
     php bin/console doctrine:schema:validate --env=devkit
+    php bin/console oauth-client:create api.money.loc --grant password
 }
 
 composer_install () {
