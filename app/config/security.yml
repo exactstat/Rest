@@ -24,26 +24,14 @@ security:
             pattern:    ^/api
             fos_oauth:  true
             stateless:  true
-            anonymous:  false
+            anonymous:  true
         main:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
-
             logout:       true
             anonymous:    true
-#            oauth:
-#                resource_owners:
-#                    facebook:           "/login/check-facebook"
-#                    google:             "/login/check-google"
-#                    my_custom_provider: "/login/check-custom"
-#                    my_github:          "/login/check-github"
-#                login_path:        /login
-#                use_forward:       false
-#                failure_path:      /login
-#                oauth_user_provider:
-#                    service: my.custom.user_provider
 
     access_control:
-        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+#        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }

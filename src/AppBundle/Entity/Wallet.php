@@ -25,7 +25,7 @@ class Wallet
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="wallet")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
