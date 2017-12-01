@@ -9,6 +9,7 @@
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +27,11 @@ class CreateClientCommand extends ContainerAwareCommand
             ->setName('oauth-client:create')
             ->setDescription('Creates a new client')
             ->addOption('grant', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addArgument(
+                'hosts',
+                InputArgument::OPTIONAL,
+                'Set host'
+            )
             ->setHelp(
                 <<<EOT
                             The <info>%command.name%</info>command creates a new client.
@@ -42,8 +48,9 @@ EOT
     {
         $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
         $client = $clientManager->createClient();
-
-        $client->setRedirectUris(array_merge(['hosts' => []], []));
+        $hosts = $input->getArgument('hosts');
+        $hosts = $hosts ?? 'api.money.loc';
+        $client->setRedirectUris($hosts);
 
         $client->setAllowedGrantTypes($input->getOption('grant'));
 
