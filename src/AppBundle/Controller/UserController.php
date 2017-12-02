@@ -39,6 +39,6 @@ class UserController extends AbstractController
             ]
         );
 
-        return $this->view(array('date' => $wallet));
+        return $this->view(array('data' => $wallet));
     }
 }

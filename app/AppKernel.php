@@ -5,6 +5,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    const DEVKIT_ENV = 'devkit';
+    const PROD_ENV = 'prod';
+
     public function registerBundles()
     {
         $bundles = [
