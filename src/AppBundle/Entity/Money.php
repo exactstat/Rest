@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Money
 {
+    public const USD_C = 'usd';
+    public const UAH_C = 'uah';
+    public const EUR_C = 'eur';
+
     /**
      * @var int
      *

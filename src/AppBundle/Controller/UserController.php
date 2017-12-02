@@ -10,7 +10,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Wallet;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends AbstractController
 {
     /**
-     * @Get("/me")
+     * @Rest\Get("/me")
      * @ApiDoc(resource=true, description="Get current logined user")
      * @Rest\View()
      * @param Request $request

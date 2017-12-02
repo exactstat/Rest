@@ -8,8 +8,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\MoneyType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TransferController
@@ -19,5 +22,16 @@ use FOS\RestBundle\Controller\FOSRestController;
  */
 class TransferController extends FOSRestController
 {
-
+    /**
+     * @param Request $request
+     * @Rest\Post("/transfer")
+     * @ApiDoc(description="Create Transfer")
+     * @Rest\View()
+     * @return mixed
+     */
+    public function postTransfer(Request $request)
+    {
+        $form = $this->createForm(MoneyType::class);
+        $form->handleRequest($request);
+    }
 }
