@@ -9,10 +9,9 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Money;
-use AppBundle\Entity\Transfer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +27,12 @@ class MoneyType extends AbstractType
         $builder
             ->add('amount', IntegerType::class)
             ->add('cents', IntegerType::class)
-            ->add('currency', TextType::class);
+            ->add('currency', ChoiceType::class, ['choices'=>[
+                'usd' => Money::USD_C,
+                'uah' => Money::UAH_C,
+                'eur' => Money::EUR_C,
+                'euro' => Money::EUR_C
+            ]]);
     }
 
     /**

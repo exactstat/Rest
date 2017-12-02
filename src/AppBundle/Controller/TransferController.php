@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Money;
 use AppBundle\Form\Type\MoneyType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -31,7 +32,7 @@ class TransferController extends FOSRestController
      */
     public function postTransfer(Request $request)
     {
-        $form = $this->createForm(MoneyType::class);
+        $form = $this->createForm(MoneyType::class, new Money());
 
         $form->handleRequest($request);
         if (!$form->isValid()) {
