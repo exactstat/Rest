@@ -54,21 +54,21 @@ class CHD
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=2)
+     * @ORM\Column(name="exp_mon", type="string", length=2)
      */
     protected $expMon;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=2)
+     * @ORM\Column(name="exp_year", type="string", length=2)
      */
     protected $expYear;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=3)
+     * @ORM\Column(name="code", type="string", length=3)
      */
     protected $code;
 
