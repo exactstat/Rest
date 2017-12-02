@@ -32,6 +32,15 @@ class TransferController extends FOSRestController
     public function postTransfer(Request $request)
     {
         $form = $this->createForm(MoneyType::class);
+
         $form->handleRequest($request);
+        if (!$form->isValid()) {
+            return $this->view(['error' => 'Bad Data']);
+        }
+
+        $data = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
     }
 }
