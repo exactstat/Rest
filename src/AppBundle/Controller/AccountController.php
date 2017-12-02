@@ -10,7 +10,6 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class StudyController
  * @package Proofpilot\StudyBundle\Controller
@@ -18,7 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AccountController extends AbstractController
 {
-
+    /**
+     * @param Request $request
+     */
     public function postTransfer(Request $request)
     {
 
