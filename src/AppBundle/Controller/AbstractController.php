@@ -8,7 +8,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\FOSRestController;
 

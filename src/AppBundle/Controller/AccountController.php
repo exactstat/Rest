@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * Class StudyController
@@ -17,4 +19,8 @@ namespace AppBundle\Controller;
 class AccountController extends AbstractController
 {
 
+    public function postTransfer(Request $request)
+    {
+
+    }
 }
