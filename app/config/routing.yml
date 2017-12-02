@@ -16,7 +16,7 @@ NelmioApiDocBundle:
     prefix:   /doc
 
 account:
-    resource: "@AppBundle/Controller/AccountController.php"
+    resource: "@AppBundle/Controller/TransferController.php"
     prefix:   /api
     type:     annotation
 

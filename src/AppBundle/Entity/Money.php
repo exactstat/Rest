@@ -42,7 +42,6 @@ class Money
      */
     private $currency;
 
-
     /**
      * Get id
      *

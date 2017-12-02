@@ -8,9 +8,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Wallet;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,18 +20,25 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Nazar Salo <salo.nazar@gmail.com>
  * @Rest\RouteResource("User")
  */
-class UserController extends FOSRestController
+class UserController extends AbstractController
 {
     /**
-     * @Route("/me")
+     * @Get("/me")
      * @ApiDoc(resource=true, description="Get current logined user")
      * @Rest\View()
      * @param Request $request
-     * @return object
+     * @return mixed
      */
     public function meAction(Request $request)
     {
-        $user = $this->getUser();
-        return $this->view(array('data' => $user));
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $wallet = $em->getRepository(Wallet::class)->findBy(
+            [
+                'user' => $this->getUser(),
+            ]
+        );
+
+        return $this->view(array('data' => $wallet));
     }
 }

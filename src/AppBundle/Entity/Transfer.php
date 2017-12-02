@@ -44,6 +44,14 @@ class Transfer
     protected $purpose;
 
     /**
+     * @var CHD
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD")
+     * @ORM\JoinColumn(name="card", referencedColumnName="id")
+     */
+    protected $chd;
+
+    /**
      * @var Money
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
@@ -150,4 +158,19 @@ class Transfer
         return $this->id;
     }
 
+    /**
+     * @return CHD
+     */
+    public function getChd(): CHD
+    {
+        return $this->chd;
+    }
+
+    /**
+     * @param CHD $chd
+     */
+    public function setChd(CHD $chd): void
+    {
+        $this->chd = $chd;
+    }
 }
