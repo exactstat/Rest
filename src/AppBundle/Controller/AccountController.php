@@ -36,7 +36,7 @@ class AccountController extends FOSRestController
      */
     public function getAction(Request $request, Account $entity)
     {
-        return $this->view(array('date' => $entity));
+        return $this->view(array('data' => $entity));
     }
 
     /**
@@ -56,7 +56,7 @@ class AccountController extends FOSRestController
             'wallet' => $user->getWallet()
         ]);
 
-        return $this->view(array('date' => $accounts));
+        return $this->view(array('data' => $accounts));
     }
 
 

@@ -27,10 +27,11 @@ class UserController extends FOSRestController
      * @ApiDoc(resource=true, description="Get current logined user")
      * @Rest\View()
      * @param Request $request
-     * @return User
+     * @return object
      */
     public function meAction(Request $request)
     {
-        return $this->getUser();
+        $user = $this->getUser();
+        return $this->view(array('data' => $user));
     }
 }

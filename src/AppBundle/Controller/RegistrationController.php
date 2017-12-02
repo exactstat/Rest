@@ -8,7 +8,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Form\Type\RegistrationFormType;
 use FOS\OAuthServerBundle\Controller\AuthorizeController;
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -56,6 +55,12 @@ class RegistrationController extends AuthorizeController
      *          "required" = true,
      *          "description" = "User password."
      *      },
+     *      {
+     *          "name" = "registration[email]",
+     *          "dataType" = "string",
+     *          "required" = true,
+     *          "description" = "User email."
+     *      },
      *   },
      *   statusCodes = {
      *     201 = "Returned when successful",
@@ -71,24 +76,18 @@ class RegistrationController extends AuthorizeController
      */
     public function registerAction(Request $request)
     {
-        $user = new User();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $data = $request->request->all();
 
-        $form = $this->container->get('form.factory')->create(RegistrationFormType::class);
-        $form->setData($user);
+        /** @var User $user */
+        $user = $userManager->createUser();
+        $user->setUsername($data['registration']['username']);
+        $user->setEmail($data['registration']['email']);
+        $user->setPlainPassword($data['registration']['password']);
+        $user->setEnabled(true);
 
-        $form->handleRequest($request);
+        $userManager->updateUser($user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (0 !== strlen($user->getPlainPassword())) {
-                $encoder = $this->container->get('security.password_encoder');
-                $user->setPassword($encoder->encodePassword($user, $user->getPlainPassword()));
-                $user->eraseCredentials();
-            }
-            $entityManager = $this->container->get('doctrine.orm.entity_manager');
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $user;
-        }
+        return $user;
     }
 }
