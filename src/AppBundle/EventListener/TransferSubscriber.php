@@ -9,17 +9,20 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\Money;
 use AppBundle\Entity\Transfer;
 use AppBundle\Event\TransferEvent;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TransferSubscriber  implements EventSubscriberInterface
+class TransferSubscriber implements EventSubscriberInterface
 {
-    public const USD_RATE = 1;
-    public const UAH_RATE = 0.037;
-    public const EUR_RATE = 1.19;
+    public const RATE = [
+        Money::USD_C => 1,
+        Money::UAH_C => 0.037,
+        Money::EUR_C => 1.19,
+    ];
 
     /**
      * @var EntityManager
@@ -56,11 +59,30 @@ class TransferSubscriber  implements EventSubscriberInterface
         $receiver = $transfer->getReceiverAccount() ?? $this->getFromCard($transfer);
         $sender = $transfer->getSenderAccount() ?? $this->getFromCard($transfer);
 
+        $scale = $this->currencyConvertion($sender, $receiver);
     }
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
+    }
+
+    /**
+     * Defines the scale for currency exchange
+     * @param Account $sender
+     * @param Account $receiver
+     * @return int
+     */
+    public function currencyConvertion(Account $sender, Account $receiver): int
+    {
+        $senderCurrency = $sender->getCurrency();
+        $receiverCurrency = $receiver->getCurrency();
+        $scale = 1;
+        if ($senderCurrency == $receiverCurrency) {
+            return $scale;
+        }
+
+        return self::RATE[$senderCurrency] * self::RATE[$receiverCurrency];
     }
 
     /**
@@ -76,7 +98,7 @@ class TransferSubscriber  implements EventSubscriberInterface
         // and receive a real account
         // Agreed with Myhailo
 
-        $fakeAccount =  new Account();
+        $fakeAccount = new Account();
         $fakeAccount->setCurrency('USD');
         $money = clone $transfer->getMoney();
         $fakeAccount->setMoney($money->resetId());
@@ -86,4 +108,5 @@ class TransferSubscriber  implements EventSubscriberInterface
 
         return $fakeAccount;
     }
+
 }
