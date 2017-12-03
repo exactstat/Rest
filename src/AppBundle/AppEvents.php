@@ -15,4 +15,5 @@ namespace AppBundle;
 final class AppEvents
 {
     const USER_REGISTERED = 'user.registered';
+    const USER_DISABLED = 'user.disabled';
 }

@@ -24,9 +24,9 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="currency", type="string", length=5)
+     * @ORM\Column(name="currency", type="string", length=5, nullable=true)
      */
-    private $currency;
+    private $currency = Money::NO_CURRENCY;
 
     /**
      * @var Wallet
@@ -39,7 +39,7 @@ class Account
     /**
      * @var Money
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money", cascade={"all"})
      * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
      */
     protected $money;
