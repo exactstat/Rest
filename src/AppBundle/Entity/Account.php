@@ -24,6 +24,13 @@ class Account
     /**
      * @var string
      *
+     * @ORM\Column(name="number", type="string", length=20)
+     */
+    private $number;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="currency", type="string", length=5, nullable=true)
      */
     private $currency = Money::NO_CURRENCY;
@@ -32,7 +39,7 @@ class Account
      * @var Wallet
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Wallet", inversedBy="accounts")
-     * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id", nullable=true)
      */
     protected $wallet;
 
@@ -46,10 +53,21 @@ class Account
 
     /**
      * Account constructor.
+     * @param string $number
      */
-    public function __construct()
+    public function __construct($number = null)
     {
         $this->money = new Money();
+        $this->number = \is_string($number) && (\strlen($number) > 8 && \strlen($number) < 14)
+            ? $number : self::getNewCardNumber();
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getNewCardNumber(): string
+    {
+        return (string)random_int(11111, 99999).(string)random_int(11110, 99990);
     }
 
     /**
@@ -61,6 +79,15 @@ class Account
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getNumber(): string
+    {
+        return $this->number;
+    }
+
 
     /**
      * Set currency

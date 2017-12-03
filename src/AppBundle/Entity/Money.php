@@ -142,5 +142,12 @@ class Money
     {
         return $this->currency;
     }
+
+    public function resetId(): Money
+    {
+        $this->id = null;
+
+        return $this;
+    }
 }
 

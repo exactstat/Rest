@@ -10,6 +10,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Account
@@ -31,7 +33,13 @@ class CHD
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=254)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 30,
+     *      minMessage = "Name is invalid.",
+     *      maxMessage = "Name is too long. Please provide a shorter name"
+     * )
+     * @ORM\Column(name="first_name", type="string", length=30)
      */
     protected $firstName;
 
@@ -39,35 +47,57 @@ class CHD
     /**
      * @var string
      *
-     * @ORM\Column(name="second_name", type="string", length=254)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 30,
+     *      minMessage = "Surname is invalid.",
+     *      maxMessage = "Surname is too long. Please provide a shorter surname"
+     * )
+     * @ORM\Column(name="second_name", type="string", length=30)
      */
     protected $secondName;
 
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern="/^\d{16}/",
+     *     match=true,
+     *     message="invalid card number"
+     * )
      * @ORM\Column(name="card_number", type="string", length=16)
      */
     protected $cardNumber;
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern="/^\d{2}/",
+     *     match=true,
+     *     message="invalid month"
+     * )
      * @ORM\Column(name="exp_mon", type="string", length=2)
      */
     protected $expMon;
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern="/^\d{2}/",
+     *     match=true,
+     *     message="invalid year"
+     * )
      * @ORM\Column(name="exp_year", type="string", length=2)
      */
     protected $expYear;
 
     /**
      * @var string
-     *
+     * @Assert\Regex(
+     *     pattern="/^\d{3}/",
+     *     match=true,
+     *     message="invalid card security code"
+     * )
      * @ORM\Column(name="code", type="string", length=3)
      */
     protected $code;
@@ -103,7 +133,7 @@ class CHD
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -119,7 +149,7 @@ class CHD
     /**
      * @return string
      */
-    public function getSecondName(): string
+    public function getSecondName(): ?string
     {
         return $this->secondName;
     }
@@ -135,7 +165,7 @@ class CHD
     /**
      * @return string
      */
-    public function getCardNumber(): string
+    public function getCardNumber(): ?string
     {
         return $this->cardNumber;
     }
@@ -151,7 +181,7 @@ class CHD
     /**
      * @return string
      */
-    public function getExpMon(): string
+    public function getExpMon(): ?string
     {
         return $this->expMon;
     }
@@ -167,7 +197,7 @@ class CHD
     /**
      * @return string
      */
-    public function getExpYear(): string
+    public function getExpYear(): ?string
     {
         return $this->expYear;
     }
@@ -183,7 +213,7 @@ class CHD
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }

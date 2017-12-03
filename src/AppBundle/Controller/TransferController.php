@@ -8,12 +8,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\CHD;
 use AppBundle\Entity\Transfer;
 use AppBundle\Form\Type\TransferType;
 use AppBundle\Util\FormErrorsHelper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\UserBundle\Event\TransferEvent;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,14 +38,7 @@ class TransferController extends FOSRestController
      */
     public function postTransfer(Request $request)
     {
-        $options = [];
-        $chd = $request->request->get('chd');
-        $card = $request->request->get('card');
-        if ($chd || $card) {
-            $options['chd'] = true;
-        }
-
-        $form = $this->createForm(TransferType::class, new Transfer(), $options);
+        $form = $this->createFormTransfer($request);
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
@@ -51,12 +47,45 @@ class TransferController extends FOSRestController
                 Response::HTTP_BAD_REQUEST
             );
         }
-
         $data = $form->getData();
+
+        if(!$this->cardOrAccountCheck($data)){
+            return $this->view(['error' => 'Provide receiver and sender']);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($data);
         $em->flush();
 
+        $this->get('event_dispatcher')->dispatch('received', new TransferEvent($data));
+
         return $this->view(['data' => $data]);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed|\Symfony\Component\Form\FormInterface
+     */
+    protected function createFormTransfer(Request $request)
+    {
+        $options = $request->request->get('chd') ? ['label' => 'chd'] : [];
+
+        return $this->createForm(TransferType::class, new Transfer(), $options);
+    }
+
+    protected function cardOrAccountCheck($data)
+    {
+        /** @var Transfer $data */
+        $ra = $data->getReceiverAccount();
+        $sa = $data->getSenderAccount();
+
+        if ($ra || $sa) {
+            $card = $data->getChd();
+            if (! $card instanceof CHD) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

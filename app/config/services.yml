@@ -31,10 +31,15 @@ services:
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
-    #     arguments:
-    #         $someArgument: 'some_value'
+    #
 
     subscriber.user:
         class: AppBundle\EventListener\UserSubscriber
         tags:
             - { name: kernel.event_subscriber}
+
+    subscriber.transfer:
+        class: AppBundle\EventListener\TransferSubscriber
+        tags:
+            - { name: kernel.event_subscriber}
+        arguments: ['@doctrine.orm.entity_manager']

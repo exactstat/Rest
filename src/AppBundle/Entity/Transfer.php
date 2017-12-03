@@ -22,6 +22,7 @@ class Transfer
 {
     public const PROCESSED_STATUS = 'processed';
     public const RECEIVED_STATUS = 'received';
+    public const FAILED_STATUS = 'received';
 
     /**
      * @var int
@@ -78,7 +79,7 @@ class Transfer
     /**
      * @var CHD
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD", cascade={"all"})
      * @ORM\JoinColumn(name="card", referencedColumnName="id", nullable=true)
      */
     protected $chd;
@@ -90,6 +91,11 @@ class Transfer
      * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
      */
     protected $money;
+
+    /**
+     * @ORM\Column(name="commission_on_sender", type="boolean")
+     */
+    protected $commissionOnSender = false;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -107,6 +113,25 @@ class Transfer
     {
         $this->setCreatedAt(new \DateTime('now'));
         $this->money = new Money();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommissionOnSender()
+    {
+        return $this->commissionOnSender;
+    }
+
+    /**
+     * @param mixed $commissionOnSender
+     */
+    public function setCommissionOnSender($commissionOnSender): void
+    {
+        if (is_bool($commissionOnSender)) {
+
+            $this->commissionOnSender = $commissionOnSender;
+        }
     }
 
     /**
