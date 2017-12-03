@@ -30,21 +30,21 @@ class Money
      *
      * @ORM\Column(name="amount", type="integer")
      */
-    private $amount;
+    private $amount = 0;
 
     /**
      * @var int
      *
      * @ORM\Column(name="cents", type="integer")
      */
-    private $cents;
+    private $cents = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="currency", type="string", length=5)
      */
-    private $currency;
+    private $currency = 'USD';
 
     /**
      * Get id
@@ -123,7 +123,7 @@ class Money
      *
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): ?string
     {
         return $this->currency;
     }

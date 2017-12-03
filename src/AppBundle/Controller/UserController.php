@@ -64,6 +64,7 @@ class UserController extends AbstractController
      * @param Request $request
      *
      * @return object
+     * @throws \Exception
      */
     public function patchAction(Request $request)
     {
