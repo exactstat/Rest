@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 
 /**
  * Money
@@ -113,14 +114,19 @@ class Money
      * @param string $currency
      *
      * @return Money
+     * @throws \Symfony\Component\Form\Exception\InvalidArgumentException
      */
     public function setCurrency($currency): Money
     {
         $allowed = [self::EUR_C, self::USD_C, self::UAH_C];
-
-        if (\in_array($currency, $allowed, true)) {
-            $this->currency = $currency;
+        if ($currency === null) {
+            return $this;
         }
+        if (!\in_array($currency, $allowed, true)) {
+            throw new InvalidArgumentException('This currency is not supported');
+        }
+
+        $this->currency = $currency;
 
         return $this;
     }

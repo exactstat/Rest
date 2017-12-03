@@ -37,7 +37,12 @@ class MoneyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(['data_class' => Money::class]);
+            ->setDefaults(
+                [
+                    'data_class' => Money::class,
+                    'allow_extra_fields' => true,
+                ]
+            );
     }
 
     /**
@@ -45,6 +50,6 @@ class MoneyType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return '';
+        return 'money';
     }
 }

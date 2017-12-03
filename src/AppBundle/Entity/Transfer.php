@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Transfer
@@ -19,6 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transfer
 {
+    public const PROCESSED_STATUS = 'processed';
+    public const RECEIVED_STATUS = 'received';
+
     /**
      * @var int
      *
@@ -29,16 +33,44 @@ class Transfer
     private $id;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^\d+$/",
+     *     match=true,
+     *     message="Sender Account is invalid"
+     * )
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 20,
+     *      minMessage = "Sender Account is invalid. Lack some numbers",
+     *      maxMessage = "Sender Account is invalid. Too much numbers"
+     * )
      * @ORM\Column(name="sender_account", type="string", length=20)
      */
     protected $senderAccount;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^\d+$/",
+     *     match=true,
+     *     message="Receiver Account is invalid"
+     * )
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 20,
+     *      minMessage = "Receiver Account is invalid. Lack some numbers",
+     *      maxMessage = "Receiver Account is invalid. Too much numbers"
+     * )
      * @ORM\Column(name="receiver_account", type="string", length=20)
      */
     protected $receiverAccount;
 
     /**
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 200,
+     *      minMessage = "Purpose is invalid. Provide more details",
+     *      maxMessage = "Purpose is invalid. Provide less characters"
+     * )
      * @ORM\Column(name="purpose", type="string")
      */
     protected $purpose;
@@ -47,14 +79,14 @@ class Transfer
      * @var CHD
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD")
-     * @ORM\JoinColumn(name="card", referencedColumnName="id")
+     * @ORM\JoinColumn(name="card", referencedColumnName="id", nullable=true)
      */
     protected $chd;
 
     /**
      * @var Money
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money", cascade={"all"})
      * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
      */
     protected $money;
@@ -64,10 +96,17 @@ class Transfer
      */
     protected $createdAt;
 
+    /**
+     * @var string
+     * @ORM\Column(name="status", type="string", length=20)
+     */
+    protected $status = self::RECEIVED_STATUS;
+
 
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
+        $this->money = new Money();
     }
 
     /**
@@ -76,6 +115,16 @@ class Transfer
     public function getMoney(): Money
     {
         return $this->money;
+    }
+
+    /**
+     * @return Transfer
+     */
+    public function markProcessed(): Transfer
+    {
+        $this->status = self::PROCESSED_STATUS;
+
+        return $this;
     }
 
     /**
@@ -161,7 +210,7 @@ class Transfer
     /**
      * @return CHD
      */
-    public function getChd(): CHD
+    public function getChd(): ?CHD
     {
         return $this->chd;
     }
