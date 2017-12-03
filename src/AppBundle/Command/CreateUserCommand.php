@@ -9,7 +9,7 @@ namespace AppBundle\Command;
 
 use AppBundle\AppEvents;
 use AppBundle\Entity\User;
-use FOS\UserBundle\Event\TransferEvent;
+use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,7 +60,7 @@ EOT
         $user->setPlainPassword($password);
         $user->setEnabled(true);
 
-        $dispatcher->dispatch(AppEvents::USER_REGISTERED, new TransferEvent($user));
+        $dispatcher->dispatch(AppEvents::USER_REGISTERED, new UserEvent($user));
 
         $userManager->updateUser($user);
 
