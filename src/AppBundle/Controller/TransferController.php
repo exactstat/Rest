@@ -14,6 +14,7 @@ use AppBundle\Form\Type\TransferType;
 use AppBundle\Util\FormErrorsHelper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\UserBundle\Event\TransferEvent;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +56,8 @@ class TransferController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->persist($data);
         $em->flush();
+
+        $this->get('event_dispatcher')->dispatch('received', new TransferEvent($data));
 
         return $this->view(['data' => $data]);
     }

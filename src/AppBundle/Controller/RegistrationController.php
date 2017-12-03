@@ -11,7 +11,7 @@ use AppBundle\AppEvents;
 use AppBundle\Entity\User;
 use FOS\OAuthServerBundle\Controller\AuthorizeController;
 use FOS\RestBundle\Controller\Annotations\View;
-use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\Event\TransferEvent;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -90,7 +90,7 @@ class RegistrationController extends AuthorizeController
         $user->setPlainPassword($data['registration']['password']);
         $user->setEnabled(true);
 
-        $dispatcher->dispatch(AppEvents::USER_REGISTERED, new UserEvent($user, $request));
+        $dispatcher->dispatch(AppEvents::USER_REGISTERED, new TransferEvent($user, $request));
 
         $userManager->updateUser($user);
 

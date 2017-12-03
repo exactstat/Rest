@@ -22,6 +22,7 @@ class Transfer
 {
     public const PROCESSED_STATUS = 'processed';
     public const RECEIVED_STATUS = 'received';
+    public const FAILED_STATUS = 'received';
 
     /**
      * @var int

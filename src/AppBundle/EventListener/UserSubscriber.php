@@ -11,7 +11,7 @@ use AppBundle\AppEvents;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Money;
 use AppBundle\Entity\User;
-use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\Event\TransferEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class UserSubscriber implements EventSubscriberInterface
 {
-    public function onUserRegister(UserEvent $event, $eventName)
+    public function onUserRegister(TransferEvent $event, $eventName)
     {
         /** @var User $user */
         $user = $event->getUser();
@@ -52,7 +52,7 @@ class UserSubscriber implements EventSubscriberInterface
         $wallet->addAccount($accountBonus);
     }
 
-    public function onUserDisable(UserEvent $event, $eventName)
+    public function onUserDisable(TransferEvent $event, $eventName)
     {
         // @todo when disable user
     }
