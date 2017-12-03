@@ -49,6 +49,6 @@ class MoneyType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'money';
+        return '';
     }
 }
