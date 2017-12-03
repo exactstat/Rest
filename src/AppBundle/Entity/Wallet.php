@@ -33,7 +33,7 @@ class Wallet
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Account", mappedBy="wallet")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Account", mappedBy="wallet", cascade={"persist"})
      */
     protected $accounts;
 
@@ -89,6 +89,17 @@ class Wallet
         $this->accounts = $accounts;
 
         return $this;
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function addAccount(Account $account): void
+    {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts->add($account);
+            $account->setWallet($this);
+        }
     }
 
 }

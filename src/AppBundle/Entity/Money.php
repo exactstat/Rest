@@ -16,6 +16,7 @@ class Money
     public const USD_C = 'usd';
     public const UAH_C = 'uah';
     public const EUR_C = 'eur';
+    public const NO_CURRENCY = '';
 
     /**
      * @var int
@@ -46,6 +47,7 @@ class Money
      * @ORM\Column(name="currency", type="string", length=5)
      */
     private $currency = 'USD';
+
 
     /**
      * Get id
@@ -118,7 +120,7 @@ class Money
      */
     public function setCurrency($currency): Money
     {
-        $allowed = [self::EUR_C, self::USD_C, self::UAH_C];
+        $allowed = [self::EUR_C, self::USD_C, self::UAH_C, self::NO_CURRENCY];
         if ($currency === null) {
             return $this;
         }

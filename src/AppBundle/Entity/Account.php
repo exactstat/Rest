@@ -39,7 +39,7 @@ class Account
     /**
      * @var Money
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Money", cascade={"all"})
      * @ORM\JoinColumn(name="money_id", referencedColumnName="id")
      */
     protected $money;

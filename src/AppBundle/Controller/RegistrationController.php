@@ -90,9 +90,9 @@ class RegistrationController extends AuthorizeController
         $user->setPlainPassword($data['registration']['password']);
         $user->setEnabled(true);
 
-        $userManager->updateUser($user);
-
         $dispatcher->dispatch(AppEvents::USER_REGISTERED, new UserEvent($user, $request));
+
+        $userManager->updateUser($user);
 
         return $user;
     }
