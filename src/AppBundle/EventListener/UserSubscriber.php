@@ -28,21 +28,25 @@ class UserSubscriber implements EventSubscriberInterface
         $wallet = $user->getWallet();
 
         $accountUSD = new Account();
+        $accountUSD->setCurrency(Money::USD_C);
         $accountUSD->getMoney()->setCurrency(Money::USD_C);
         $accountUSD->getMoney()->setAmount(0);
         $wallet->addAccount($accountUSD);
 
         $accountEUR = new Account();
+        $accountEUR->setCurrency(Money::EUR_C);
         $accountEUR->getMoney()->setCurrency(Money::EUR_C);
         $accountEUR->getMoney()->setAmount(0);
         $wallet->addAccount($accountEUR);
 
         $accountUAH = new Account();
+        $accountUAH->setCurrency(Money::UAH_C);
         $accountUAH->getMoney()->setCurrency(Money::UAH_C);
         $accountUAH->getMoney()->setAmount(0);
         $wallet->addAccount($accountUAH);
 
         $accountBonus = new Account();
+        $accountBonus->setCurrency(Money::NO_CURRENCY);
         $accountBonus->getMoney()->setCurrency(Money::NO_CURRENCY);
         $accountBonus->getMoney()->setAmount(0);
         $wallet->addAccount($accountBonus);

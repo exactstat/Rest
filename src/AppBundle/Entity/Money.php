@@ -16,7 +16,7 @@ class Money
     public const USD_C = 'usd';
     public const UAH_C = 'uah';
     public const EUR_C = 'eur';
-    public const NO_CURRENCY = '';
+    public const NO_CURRENCY = null;
 
     /**
      * @var int
@@ -44,9 +44,9 @@ class Money
     /**
      * @var string
      *
-     * @ORM\Column(name="currency", type="string", length=5)
+     * @ORM\Column(name="currency", type="string", length=5, nullable=true)
      */
-    private $currency = 'USD';
+    private $currency = Money::NO_CURRENCY;
 
 
     /**

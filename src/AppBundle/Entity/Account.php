@@ -24,9 +24,9 @@ class Account
     /**
      * @var string
      *
-     * @ORM\Column(name="currency", type="string", length=5)
+     * @ORM\Column(name="currency", type="string", length=5, nullable=true)
      */
-    private $currency;
+    private $currency = Money::NO_CURRENCY;
 
     /**
      * @var Wallet
