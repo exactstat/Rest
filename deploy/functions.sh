@@ -40,6 +40,9 @@ provision_clean () {
     php bin/console doctrine:schema:create --env=devkit
     php bin/console doctrine:schema:validate --env=devkit
     php bin/console oauth-client:create api.money.loc --grant password
+    php bin/console user:create --username user1 --email user1@mail.ua --password user1passwd
+    php bin/console user:create --username user2 --email user2@mail.ua --password user2passwd
+    php bin/console user:create --username user3 --email user3@mail.ua --password user3passwd
 }
 
 composer_install () {
