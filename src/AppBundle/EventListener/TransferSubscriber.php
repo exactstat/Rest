@@ -6,18 +6,21 @@
  * at 03.12.17 18:00
  */
 
-
 namespace AppBundle\EventListener;
-
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Transfer;
+use AppBundle\Event\TransferEvent;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TransferSubscriber  implements EventSubscriberInterface
 {
+    public const USD_RATE = 1;
+    public const UAH_RATE = 0.037;
+    public const EUR_RATE = 1.19;
+
     /**
      * @var EntityManager
      */
@@ -64,7 +67,6 @@ class TransferSubscriber  implements EventSubscriberInterface
      * Get account from card
      * @param Transfer $transfer
      * @return Account
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function getFromCard(Transfer $transfer)
     {
