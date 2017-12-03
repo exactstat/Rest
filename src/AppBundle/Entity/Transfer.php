@@ -44,7 +44,7 @@ class Transfer
      *      minMessage = "Sender Account is invalid. Lack some numbers",
      *      maxMessage = "Sender Account is invalid. Too much numbers"
      * )
-     * @ORM\Column(name="sender_account", type="string", length=20)
+     * @ORM\Column(name="sender_account", type="string", length=20, nullable=true)
      */
     protected $senderAccount;
 
@@ -60,7 +60,7 @@ class Transfer
      *      minMessage = "Receiver Account is invalid. Lack some numbers",
      *      maxMessage = "Receiver Account is invalid. Too much numbers"
      * )
-     * @ORM\Column(name="receiver_account", type="string", length=20)
+     * @ORM\Column(name="receiver_account", type="string", length=20, nullable=true)
      */
     protected $receiverAccount;
 
