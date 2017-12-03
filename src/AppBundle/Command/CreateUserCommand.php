@@ -59,9 +59,11 @@ EOT
         $user->setEmail($email);
         $user->setPlainPassword($password);
         $user->setEnabled(true);
-        $userManager->updateUser($user);
 
         $dispatcher->dispatch(AppEvents::USER_REGISTERED, new UserEvent($user));
+
+        $userManager->updateUser($user);
+
         $output->writeln(
             sprintf(
                 "User: <info>%s</info>\nemail: <info>%s</info>",
