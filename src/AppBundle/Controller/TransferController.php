@@ -8,12 +8,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\CHD;
 use AppBundle\Entity\Transfer;
 use AppBundle\Form\Type\TransferType;
 use AppBundle\Util\FormErrorsHelper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,8 +46,12 @@ class TransferController extends FOSRestController
                 Response::HTTP_BAD_REQUEST
             );
         }
-
         $data = $form->getData();
+
+        if(!$this->cardOrAccountCheck($data)){
+            return $this->view(['error' => 'Provide receiver and sender']);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($data);
         $em->flush();
@@ -62,5 +68,21 @@ class TransferController extends FOSRestController
         $options = $request->request->get('chd') ? ['label' => 'chd'] : [];
 
         return $this->createForm(TransferType::class, new Transfer(), $options);
+    }
+
+    protected function cardOrAccountCheck($data)
+    {
+        /** @var Transfer $data */
+        $ra = $data->getReceiverAccount();
+        $sa = $data->getSenderAccount();
+
+        if ($ra || $sa) {
+            $card = $data->getChd();
+            if (! $card instanceof CHD) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
