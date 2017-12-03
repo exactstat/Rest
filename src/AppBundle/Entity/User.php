@@ -75,9 +75,18 @@ class User extends BaseUser
     /**
      * @var Wallet
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Wallet", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Wallet", mappedBy="user", cascade={"all"})
      */
     protected $wallet;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->wallet = new Wallet($this);
+    }
 
     /**
      * @return integer

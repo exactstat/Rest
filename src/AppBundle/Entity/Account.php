@@ -45,6 +45,14 @@ class Account
     protected $money;
 
     /**
+     * Account constructor.
+     */
+    public function __construct()
+    {
+        $this->money = new Money();
+    }
+
+    /**
      * Get id
      *
      * @return int

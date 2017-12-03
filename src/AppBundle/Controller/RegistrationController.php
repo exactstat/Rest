@@ -7,9 +7,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppEvents;
 use AppBundle\Entity\User;
 use FOS\OAuthServerBundle\Controller\AuthorizeController;
 use FOS\RestBundle\Controller\Annotations\View;
+use FOS\UserBundle\Event\UserEvent;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -77,6 +79,8 @@ class RegistrationController extends AuthorizeController
     public function registerAction(Request $request)
     {
         $userManager = $this->container->get('fos_user.user_manager');
+        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        $dispatcher = $this->container->get('event_dispatcher');
         $data = $request->request->all();
 
         /** @var User $user */
@@ -87,6 +91,8 @@ class RegistrationController extends AuthorizeController
         $user->setEnabled(true);
 
         $userManager->updateUser($user);
+
+        $dispatcher->dispatch(AppEvents::USER_REGISTERED, new UserEvent($user, $request));
 
         return $user;
     }
