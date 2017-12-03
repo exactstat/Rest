@@ -37,8 +37,9 @@ class Wallet
      */
     protected $accounts;
 
-    public function __construct()
+    public function __construct($user)
     {
+        $this->setUser($user);
         $this->accounts = new ArrayCollection();
     }
 
