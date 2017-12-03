@@ -47,7 +47,7 @@ class Transfer
      * @var CHD
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD")
-     * @ORM\JoinColumn(name="card", referencedColumnName="id")
+     * @ORM\JoinColumn(name="card", referencedColumnName="id", nullable=true)
      */
     protected $chd;
 
@@ -68,6 +68,7 @@ class Transfer
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
+        $this->money = new Money();
     }
 
     /**
@@ -161,7 +162,7 @@ class Transfer
     /**
      * @return CHD
      */
-    public function getChd(): CHD
+    public function getChd(): ?CHD
     {
         return $this->chd;
     }

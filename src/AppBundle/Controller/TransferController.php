@@ -8,8 +8,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Money;
-use AppBundle\Form\Type\MoneyType;
+use AppBundle\Entity\Transfer;
+use AppBundle\Form\Type\TransferType;
 use AppBundle\Util\FormErrorsHelper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -35,7 +35,14 @@ class TransferController extends FOSRestController
      */
     public function postTransfer(Request $request)
     {
-        $form = $this->createForm(MoneyType::class, new Money());
+        $options = [];
+        $chd = $request->request->get('chd');
+        $card = $request->request->get('card');
+        if ($chd || $card) {
+            $options['chd'] = true;
+        }
+
+        $form = $this->createForm(TransferType::class, new Transfer(), $options);
         $form->handleRequest($request);
 
         if (!$form->isValid()) {

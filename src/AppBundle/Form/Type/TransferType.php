@@ -27,9 +27,12 @@ class TransferType extends AbstractType
             ->add('senderAccount', TextType::class)
             ->add('receiverAccount', TextType::class)
             ->add('purpose', TextType::class)
-            ->add('chd', CHDType::class)
-            ->add('money', MoneyType::class)
-        ;
+            ->add('money', MoneyType::class);
+
+        if (\in_array('chd', $options, true)) {
+            $builder->add('chd', CHDType::class);
+            unset($options['chd']);
+        }
     }
 
     /**
@@ -38,7 +41,12 @@ class TransferType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(['data_class' => Transfer::class]);
+            ->setDefaults(
+                [
+                    'data_class' => Transfer::class,
+                    'allow_extra_fields' => true,
+                ]
+            );
     }
 
     /**
