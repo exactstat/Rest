@@ -65,7 +65,9 @@ class Money
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        if (is_int($amount)) {
+            $this->amount = $amount;
+        }
 
         return $this;
     }
@@ -87,9 +89,11 @@ class Money
      *
      * @return Money
      */
-    public function setCents($cents)
+    public function setCents($cents): Money
     {
-        $this->cents = $cents;
+        if (is_int($cents)) {
+            $this->cents = $cents;
+        }
 
         return $this;
     }
@@ -106,14 +110,17 @@ class Money
 
     /**
      * Set currency
-     *
      * @param string $currency
      *
      * @return Money
      */
-    public function setCurrency($currency)
+    public function setCurrency($currency): Money
     {
-        $this->currency = $currency;
+        $allowed = [self::EUR_C, self::USD_C, self::UAH_C];
+
+        if (\in_array($currency, $allowed, true)) {
+            $this->currency = $currency;
+        }
 
         return $this;
     }
