@@ -30,8 +30,10 @@ class TransferType extends AbstractType
             ->add('money', MoneyType::class);
 
         if (\in_array('chd', $options, true)) {
-            $builder->add('chd', CHDType::class);
-            unset($options['chd']);
+            if ($options['label'] === 'chd') {
+                unset($options['label']);
+                $builder->add('chd', CHDType::class);
+            }
         }
     }
 

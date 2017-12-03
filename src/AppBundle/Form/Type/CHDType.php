@@ -48,6 +48,6 @@ class CHDType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'card';
+        return 'chd';
     }
 }

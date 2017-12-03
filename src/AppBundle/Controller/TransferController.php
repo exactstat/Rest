@@ -35,14 +35,7 @@ class TransferController extends FOSRestController
      */
     public function postTransfer(Request $request)
     {
-        $options = [];
-        $chd = $request->request->get('chd');
-        $card = $request->request->get('card');
-        if ($chd || $card) {
-            $options['chd'] = true;
-        }
-
-        $form = $this->createForm(TransferType::class, new Transfer(), $options);
+        $form = $this->createFormTransfer($request);
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
@@ -58,5 +51,16 @@ class TransferController extends FOSRestController
         $em->flush();
 
         return $this->view(['data' => $data]);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed|\Symfony\Component\Form\FormInterface
+     */
+    protected function createFormTransfer(Request $request)
+    {
+        $options = $request->request->get('chd') ? ['label' => 'chd'] : [];
+
+        return $this->createForm(TransferType::class, new Transfer(), $options);
     }
 }

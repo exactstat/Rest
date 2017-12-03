@@ -78,7 +78,7 @@ class Transfer
     /**
      * @var CHD
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CHD", cascade={"all"})
      * @ORM\JoinColumn(name="card", referencedColumnName="id", nullable=true)
      */
     protected $chd;
