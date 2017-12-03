@@ -10,6 +10,7 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Transfer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +28,8 @@ class TransferType extends AbstractType
             ->add('senderAccount', TextType::class)
             ->add('receiverAccount', TextType::class)
             ->add('purpose', TextType::class)
-            ->add('money', MoneyType::class);
+            ->add('money', MoneyType::class)
+            ->add('commissionOnSender', CheckboxType::class);
 
         if (\in_array('chd', $options, true)) {
             if ($options['label'] === 'chd') {

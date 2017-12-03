@@ -92,6 +92,11 @@ class Transfer
     protected $money;
 
     /**
+     * @ORM\Column(name="commission_on_sender", type="boolean")
+     */
+    protected $commissionOnSender = false;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
@@ -107,6 +112,25 @@ class Transfer
     {
         $this->setCreatedAt(new \DateTime('now'));
         $this->money = new Money();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommissionOnSender()
+    {
+        return $this->commissionOnSender;
+    }
+
+    /**
+     * @param mixed $commissionOnSender
+     */
+    public function setCommissionOnSender($commissionOnSender): void
+    {
+        if (is_bool($commissionOnSender)) {
+
+            $this->commissionOnSender = $commissionOnSender;
+        }
     }
 
     /**
