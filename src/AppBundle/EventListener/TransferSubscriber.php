@@ -12,8 +12,10 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\Money;
 use AppBundle\Entity\Transfer;
 use AppBundle\Event\TransferEvent;
+use AppBundle\Service\TransactionService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TransferSubscriber implements EventSubscriberInterface
@@ -28,6 +30,16 @@ class TransferSubscriber implements EventSubscriberInterface
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var Transfer $transfer
+     */
+    protected $transfer;
+
+    /**
+     * @var TransactionService
+     */
+    protected $transactionService;
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -54,17 +66,26 @@ class TransferSubscriber implements EventSubscriberInterface
 
     public function onReceive(TransferEvent $event)
     {
-        $transfer = $event->getTransfer();
+        $this->transfer = $event->getTransfer();
 
-        $receiver = $transfer->getReceiverAccount() ?? $this->getFromCard($transfer);
-        $sender = $transfer->getSenderAccount() ?? $this->getFromCard($transfer);
+        [$receiver, $sender] = $this->resolveAccounts();
 
-        $scale = $this->currencyConvertion($sender, $receiver);
+        $this->transactionService->process(
+            $receiver,
+            $sender,
+            $this->currencyConvertion($sender, $receiver)
+        );
     }
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * TransferSubscriber constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param TransactionService $transactionService
+     */
+    public function __construct(EntityManagerInterface $entityManager, TransactionService $transactionService)
     {
         $this->em = $entityManager;
+        $this->transactionService = $transactionService;
     }
 
     /**
@@ -86,11 +107,43 @@ class TransferSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @return array
+     */
+    protected function resolveAccounts(): array
+    {
+        $receiver = $this->transfer->getReceiverAccount();
+        $sender = $this->transfer->getSenderAccount();
+
+        return [$this->getAccount($receiver), $this->getAccount($sender)];
+    }
+
+    /**
+     * @param $account
+     * @return Account|null|object
+     */
+    protected function getAccount($account)
+    {
+        if (\is_string($account)) {
+            $account = $this->em->getRepository(Account::class)->findOneBy(['number' => $account]);
+        }
+
+        if (!$account instanceof Account) {
+            $account = $this->getFromCard($this->transfer);
+        }
+
+        if (!$account instanceof Account) {
+            throw new InvalidArgumentException('Account is wrong');
+        }
+
+        return $account;
+    }
+
+    /**
      * Get account from card
      * @param Transfer $transfer
      * @return Account
      */
-    protected function getFromCard(Transfer $transfer)
+    protected function getFromCard(Transfer $transfer): Account
     {
         $chd = $transfer->getChd();
 
