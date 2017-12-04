@@ -6,22 +6,40 @@
  * at 03.12.17 18:00
  */
 
-
 namespace AppBundle\EventListener;
 
-
 use AppBundle\Entity\Account;
+use AppBundle\Entity\Money;
 use AppBundle\Entity\Transfer;
+use AppBundle\Event\TransferEvent;
+use AppBundle\Service\TransactionService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TransferSubscriber  implements EventSubscriberInterface
+class TransferSubscriber implements EventSubscriberInterface
 {
+    public const RATE = [
+        Money::USD_C => 1,
+        Money::UAH_C => 0.037,
+        Money::EUR_C => 1.19,
+    ];
+
     /**
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var Transfer $transfer
+     */
+    protected $transfer;
+
+    /**
+     * @var TransactionService
+     */
+    protected $transactionService;
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -48,25 +66,84 @@ class TransferSubscriber  implements EventSubscriberInterface
 
     public function onReceive(TransferEvent $event)
     {
-        $transfer = $event->getTransfer();
+        $this->transfer = $event->getTransfer();
 
-        $receiver = $transfer->getReceiverAccount() ?? $this->getFromCard($transfer);
-        $sender = $transfer->getSenderAccount() ?? $this->getFromCard($transfer);
+        [$receiver, $sender] = $this->resolveAccounts();
 
+        $this->transactionService->process(
+            $receiver,
+            $sender,
+            $this->currencyConvertion($sender, $receiver)
+        );
     }
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * TransferSubscriber constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param TransactionService $transactionService
+     */
+    public function __construct(EntityManagerInterface $entityManager, TransactionService $transactionService)
     {
         $this->em = $entityManager;
+        $this->transactionService = $transactionService;
+    }
+
+    /**
+     * Defines the scale for currency exchange
+     * @param Account $sender
+     * @param Account $receiver
+     * @return int
+     */
+    public function currencyConvertion(Account $sender, Account $receiver): int
+    {
+        $senderCurrency = $sender->getCurrency();
+        $receiverCurrency = $receiver->getCurrency();
+        $scale = 1;
+        if ($senderCurrency == $receiverCurrency) {
+            return $scale;
+        }
+
+        return self::RATE[$senderCurrency] * self::RATE[$receiverCurrency];
+    }
+
+    /**
+     * @return array
+     */
+    protected function resolveAccounts(): array
+    {
+        $receiver = $this->transfer->getReceiverAccount();
+        $sender = $this->transfer->getSenderAccount();
+
+        return [$this->getAccount($receiver), $this->getAccount($sender)];
+    }
+
+    /**
+     * @param $account
+     * @return Account|null|object
+     */
+    protected function getAccount($account)
+    {
+        if (\is_string($account)) {
+            $account = $this->em->getRepository(Account::class)->findOneBy(['number' => $account]);
+        }
+
+        if (!$account instanceof Account) {
+            $account = $this->getFromCard($this->transfer);
+        }
+
+        if (!$account instanceof Account) {
+            throw new InvalidArgumentException('Account is wrong');
+        }
+
+        return $account;
     }
 
     /**
      * Get account from card
      * @param Transfer $transfer
      * @return Account
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function getFromCard(Transfer $transfer)
+    protected function getFromCard(Transfer $transfer): Account
     {
         $chd = $transfer->getChd();
 
@@ -74,7 +151,7 @@ class TransferSubscriber  implements EventSubscriberInterface
         // and receive a real account
         // Agreed with Myhailo
 
-        $fakeAccount =  new Account();
+        $fakeAccount = new Account();
         $fakeAccount->setCurrency('USD');
         $money = clone $transfer->getMoney();
         $fakeAccount->setMoney($money->resetId());
@@ -84,4 +161,5 @@ class TransferSubscriber  implements EventSubscriberInterface
 
         return $fakeAccount;
     }
+
 }
